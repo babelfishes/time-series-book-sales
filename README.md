@@ -49,12 +49,3 @@ Publishers need accurate sales forecasts to optimize inventory, reduce overstock
 2. Machine learning models may struggle with small datasets or highly irregular sales patterns.  
 3. Simple models can sometimes outperform more complex ML approaches.  
 4. Understanding the sales trend and seasonality is critical to selecting the right model.  
-
-## How to Run
-1. Open the notebook: `book_sales_forecasting.ipynb`  
-2. Run all cells in Google Colab or Jupyter  
-3. Required packages: pandas, numpy, matplotlib, statsmodels, xgboost, keras/tensorflow  
-
-Colab link (optional): `[Open in Google Colab](your-link-here)`
-
-## Project Structure
