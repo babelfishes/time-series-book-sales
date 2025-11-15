@@ -1,56 +1,60 @@
-# Book Sales Forecasting Using Classical and Machine Learning Methods
+# Book Sales Forecasting: Model Comparison
 
 ## Overview
-This project analyzes historical Nielsen BookScan data to forecast book sales for two popular titles:  
+This project compares classical time series models and machine learning models for forecasting book sales using Nielsen BookScan data. The focus is on two popular titles:  
+
 - **The Alchemist** by Paulo Coelho  
 - **The Very Hungry Caterpillar** by Eric Carle  
 
-The goal is to help small- and medium-sized publishers improve demand forecasting and optimize inventory planning. Classical time series models (ARIMA/SARIMA) and several machine learning models (XGBoost, LSTM, hybrid methods) were applied and compared.
+The goal is to understand which modeling approaches—**classical (ARIMA/SARIMA)** or **machine learning (XGBoost, LSTM, hybrid)**—produce the most reliable sales forecasts for publishers.
 
 ## Problem Statement
-Publishers need reliable forecasting methods to reduce stockouts, avoid overprinting, and manage risk. This study evaluates multiple forecasting techniques using Nielsen BookScan data to determine which models offer the best predictive performance for book sales.
+Publishers need accurate sales forecasts to optimize inventory, reduce overstock or understock, and minimize financial risk. This project evaluates multiple forecasting methods on historical Nielsen BookScan data to identify which models provide the best predictive performance for book sales.
 
 ## Dataset
-- **Data source:** Nielsen BookScan (Google Sheets, access requires permission)  
-- **Number of books analyzed:** 61 (filtered to two titles for main analysis)  
-- **Key features:** Sales volume per day, ISBNs, dates  
-- **Preprocessing notes:**  
-  - Missing daily volumes were filled with 0 to represent no-sales days  
+- **Source:** Nielsen BookScan (Google Sheets; access requires permission)  
+- **Books analyzed:** 61 (main focus on 2 titles)  
+- **Features:** Daily sales volume, ISBN, dates  
+- **Preprocessing:**  
+  - Missing daily volumes filled with 0  
   - Data resampled weekly  
-  - Removed ISBNs without sales past July 2024  
+  - Filtered ISBNs with no sales past July 2024  
 
 ## Methodology
 
-### Data Processing
-- Loaded spreadsheets into pandas DataFrames  
-- Converted date columns to datetime index  
-- Filtered dataset to focus on *The Alchemist* and *The Very Hungry Caterpillar*  
-
-### Exploratory Analysis
-- Most titles declined in sales from 2000–2012, then stabilized  
-- ‘The Alchemist’ shows stable seasonal peaks (additive decomposition suitable)  
-- ‘The Very Hungry Caterpillar’ shows growth and seasonal spikes (multiplicative decomposition suitable)  
-
 ### Classical Models
-- ARIMA models selected using AIC and Ljung–Box test:  
-  - **Alchemist:** MA(1), AIC 7304  
-  - **Caterpillar:** AR(2)+MA(1), AIC 8438  
-- Forecasts visually checked; residuals mostly normal  
+- ARIMA and SARIMA models selected based on AIC and Ljung–Box test
+- Residual analysis to check model assumptions
 
 ### Machine Learning Models
-- **XGBoost:** Initially unrealistic results (likely leakage); after tuning:  
-  - Alchemist MAE: 264.51, MAPE: 47.63%  
-  - Caterpillar MAE: 546.93, MAPE: 28.27%  
-- **LSTM:** Struggled to capture trends; flatlined forecasts with worse errors  
-- **Hybrid Models (Sequential & Parallel ARIMA+LSTM):** Slight improvement; ARIMA dominated predictive power  
+- XGBoost: gradient boosting decision trees  
+- LSTM: neural network for sequential forecasting  
+- Hybrid Models: sequential and parallel combinations of ARIMA + LSTM  
+- Hyperparameter tuning using Grid Search and KerasTuner  
+- Cross-validation respecting temporal order
 
-### Monthly Aggregation
-- Reduced weekly volatility  
-- Slight improvement in SARIMA stability  
-- Machine learning errors remained higher, but relative performance unchanged  
+### Evaluation Metrics
+- **MAE (Mean Absolute Error)**  
+- **MAPE (Mean Absolute Percentage Error)**  
+- Visual inspection of forecast plots
 
 ## Results
-- Classical models (ARIMA/SARIMA) outperformed machine learning methods for these titles  
-- ML models struggled with volatility and irregular sales patterns  
-- Hybrid approaches added complexity but minimal improvement  
-- Monthly aggregation smoothed trends but did not significantly change results  
+- **Classical models consistently outperformed ML models** for both titles, capturing trends and seasonality effectively.  
+- **XGBoost and LSTM** struggled with irregular or volatile sales patterns.  
+- **Hybrid models** added complexity but only slightly improved forecasts; ARIMA carried most predictive power.  
+- Monthly aggregation smoothed weekly volatility and improved forecast stability slightly.
+
+## Key Takeaways
+1. Classical ARIMA/SARIMA models are most reliable for book sales forecasting.  
+2. Machine learning models may struggle with small datasets or highly irregular sales patterns.  
+3. Simple models can sometimes outperform more complex ML approaches.  
+4. Understanding the sales trend and seasonality is critical to selecting the right model.  
+
+## How to Run
+1. Open the notebook: `book_sales_forecasting.ipynb`  
+2. Run all cells in Google Colab or Jupyter  
+3. Required packages: pandas, numpy, matplotlib, statsmodels, xgboost, keras/tensorflow  
+
+Colab link (optional): `[Open in Google Colab](your-link-here)`
+
+## Project Structure
